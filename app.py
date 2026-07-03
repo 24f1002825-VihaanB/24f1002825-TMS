@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 from config import Config
 from extensions import db
 from models import User, StaffProfile, Trek, Booking
@@ -24,10 +24,40 @@ def create_app():
         db.create_all()
         seed_admin()
 
-    # Simple test route — confirms the app is running
+    # --- Register Blueprints ---
+    # Each blueprint handles routes for a specific part of the app.
+    # This keeps app.py clean — routes live in their own files.
+    from routes.auth import auth
+    from routes.admin import admin
+    from routes.staff import staff
+    from routes.user import user
+
+    app.register_blueprint(auth)
+    app.register_blueprint(admin)
+    app.register_blueprint(staff)
+    app.register_blueprint(user)
+
+    # --- Root route — redirect to login ---
     @app.route('/')
     def index():
-        return '<h1>Trekking Management Application</h1><p>App is running.</p>'
+        from flask import redirect, url_for, session
+        if 'user_id' in session:
+            from routes.auth import redirect_to_dashboard
+            return redirect_to_dashboard(session['role'])
+        return redirect(url_for('auth.login'))
+
+    # --- Custom error handlers ---
+    @app.errorhandler(403)
+    def forbidden(e):
+        return render_template('403.html'), 403
+
+    @app.errorhandler(404)
+    def not_found(e):
+        return render_template('404.html'), 404
+
+    @app.errorhandler(500)
+    def internal_error(e):
+        return render_template('500.html'), 500
 
     return app
 

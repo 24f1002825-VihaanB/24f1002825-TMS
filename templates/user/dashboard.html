@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Dashboard — TrekManager{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-3">Trekker Dashboard</h1>
+    <div class="card">
+        <div class="card-body">
+            <p class="text-muted mb-0">
+                <i class="bi bi-check-circle text-success me-1"></i>
+                Welcome, {{ session.get('user_name') }}! You are logged in as a <strong>Trekker</strong>.
+            </p>
+            <p class="text-muted mt-2 mb-0">
+                The full user dashboard will be built in Milestone 5.
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

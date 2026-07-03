@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}My Profile — TrekManager{% endblock %}
+
+{% block content %}
+{% set active = 'profile' %}
+{% include 'partials/staff_sidebar.html' %}
+
+<div class="main-content">
+    <h4 class="mb-4">My Profile</h4>
+
+    <div class="card">
+        <div class="card-body">
+            <form method="POST" action="{{ url_for('staff.profile') }}">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="name" class="form-label">Full Name</label>
+                        <input type="text" class="form-control" id="name" name="name"
+                               value="{{ user.name }}" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email"
+                               value="{{ user.email }}" disabled>
+                        <small class="text-muted">Email cannot be changed.</small>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="phone" class="form-label">Phone Number</label>
+                        <input type="text" class="form-control" id="phone" name="phone"
+                               value="{{ profile.phone or '' }}" placeholder="Your phone number">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Approval Status</label>
+                        <div>
+                            {% if profile.approval_status == 'approved' %}
+                                <span class="badge bg-success">Approved</span>
+                            {% elif profile.approval_status == 'pending' %}
+                                <span class="badge bg-warning text-dark">Pending</span>
+                            {% else %}
+                                <span class="badge bg-danger">Rejected</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="bio" class="form-label">Bio</label>
+                    <textarea class="form-control" id="bio" name="bio"
+                              rows="3" placeholder="Tell us about yourself...">{{ profile.bio or '' }}</textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Update Profile</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

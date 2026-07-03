@@ -1,0 +1,175 @@
+{% extends "base.html" %}
+{% block title %}{{ trek.name }} — TrekManager{% endblock %}
+
+{% block content %}
+{% set active = 'treks' %}
+{% include 'partials/staff_sidebar.html' %}
+
+<div class="main-content">
+    <div class="mb-4">
+        <a href="{{ url_for('staff.dashboard') }}" class="text-decoration-none text-muted">
+            <i class="bi bi-arrow-left me-1"></i> Back to Dashboard
+        </a>
+    </div>
+
+    <h4 class="mb-4">{{ trek.name }}</h4>
+
+    {# --- Trek Information Card --- #}
+    <div class="card mb-4">
+        <div class="card-header">Trek Information</div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <small class="text-muted d-block">Location</small>
+                    <strong>{{ trek.location }}</strong>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <small class="text-muted d-block">Duration</small>
+                    <strong>{{ trek.duration }} Days</strong>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <small class="text-muted d-block">Total Slots</small>
+                    <strong>{{ trek.available_slots }}</strong>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <small class="text-muted d-block">Difficulty</small>
+                    {% if trek.difficulty == 'easy' %}
+                        <span class="badge bg-success">Easy</span>
+                    {% elif trek.difficulty == 'moderate' %}
+                        <span class="badge bg-warning text-dark">Moderate</span>
+                    {% else %}
+                        <span class="badge bg-danger">Hard</span>
+                    {% endif %}
+                </div>
+                <div class="col-md-4 mb-3">
+                    <small class="text-muted d-block">Start Date</small>
+                    <strong>{{ trek.start_date.strftime('%d %b %Y') if trek.start_date else '—' }}</strong>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <small class="text-muted d-block">End Date</small>
+                    <strong>{{ trek.end_date.strftime('%d %b %Y') if trek.end_date else '—' }}</strong>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <small class="text-muted d-block">Status</small>
+                    {% if trek.status == 'open' %}
+                        <span class="badge bg-primary">Open</span>
+                    {% elif trek.status == 'closed' %}
+                        <span class="badge bg-secondary">Closed</span>
+                    {% else %}
+                        <span class="badge bg-success">Completed</span>
+                    {% endif %}
+                </div>
+                <div class="col-md-4 mb-3">
+                    <small class="text-muted d-block">Available Slots</small>
+                    <strong>{{ trek.available_slots }}</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {# --- Trek Actions --- #}
+    {% if trek.status != 'completed' %}
+    <div class="card mb-4">
+        <div class="card-header">Trek Actions</div>
+        <div class="card-body">
+            <div class="row g-3">
+                {# Update Available Slots #}
+                <div class="col-md-4">
+                    <form method="POST" action="{{ url_for('staff.update_slots', trek_id=trek.id) }}">
+                        <label for="available_slots" class="form-label">Update Available Slots</label>
+                        <div class="input-group">
+                            <input type="number" class="form-control" id="available_slots"
+                                   name="available_slots" value="{{ trek.available_slots }}" min="0">
+                            <button type="submit" class="btn btn-primary">Update</button>
+                        </div>
+                    </form>
+                </div>
+
+                {# Status Actions #}
+                <div class="col-md-8">
+                    <label class="form-label">Change Status</label>
+                    <div class="d-flex gap-2">
+                        {% if trek.status == 'open' %}
+                            <form method="POST" action="{{ url_for('staff.update_status', trek_id=trek.id) }}">
+                                <input type="hidden" name="status" value="closed">
+                                <button class="btn btn-secondary">Close Trek</button>
+                            </form>
+                            <form method="POST" action="{{ url_for('staff.mark_started', trek_id=trek.id) }}">
+                                <button class="btn btn-warning">
+                                    <i class="bi bi-play-fill me-1"></i> Mark as Started
+                                </button>
+                            </form>
+                        {% elif trek.status == 'closed' %}
+                            <form method="POST" action="{{ url_for('staff.update_status', trek_id=trek.id) }}">
+                                <input type="hidden" name="status" value="open">
+                                <button class="btn btn-primary">Reopen Trek</button>
+                            </form>
+                            <form method="POST" action="{{ url_for('staff.mark_started', trek_id=trek.id) }}">
+                                <button class="btn btn-warning">
+                                    <i class="bi bi-play-fill me-1"></i> Mark as Started
+                                </button>
+                            </form>
+                        {% endif %}
+
+                        {% if trek.status in ['open', 'closed'] %}
+                            <form method="POST" action="{{ url_for('staff.mark_completed', trek_id=trek.id) }}"
+                                  onsubmit="return confirm('Mark this trek as completed? This cannot be undone.')">
+                                <button class="btn btn-success">
+                                    <i class="bi bi-check-circle me-1"></i> Mark as Completed
+                                </button>
+                            </form>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    {# --- Participants Table --- #}
+    <div class="card">
+        <div class="card-header">
+            Participants ({{ participants | length }})
+        </div>
+        <div class="card-body p-0">
+            {% if participants %}
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th>User Name</th>
+                            <th>Email</th>
+                            <th>Booking Date</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for booking in participants %}
+                        <tr>
+                            <td>{{ booking.user.name }}</td>
+                            <td>{{ booking.user.email }}</td>
+                            <td>{{ booking.booking_date.strftime('%d %b %Y') }}</td>
+                            <td>
+                                {% if booking.booking_status == 'booked' %}
+                                    <span class="badge bg-primary">Booked</span>
+                                {% elif booking.booking_status == 'completed' %}
+                                    <span class="badge bg-success">Completed</span>
+                                {% elif booking.booking_status == 'cancelled' %}
+                                    <span class="badge bg-danger">Cancelled</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="text-center text-muted py-4">
+                <i class="bi bi-people" style="font-size: 2rem;"></i>
+                <p class="mt-2 mb-0">No participants registered yet.</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

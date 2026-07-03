@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}All Bookings — TrekManager{% endblock %}
+
+{% block content %}
+{% set active = 'bookings' %}
+{% include 'partials/sidebar.html' %}
+
+<div class="main-content">
+    <h4 class="mb-4">All Bookings</h4>
+
+    <div class="card">
+        <div class="card-body p-0">
+            {% if bookings %}
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th>Booking ID</th>
+                            <th>User</th>
+                            <th>Trek</th>
+                            <th>Booking Date</th>
+                            <th>Booking Status</th>
+                            <th>Payment Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for booking in bookings %}
+                        <tr>
+                            <td>B{{ '%03d' % booking.id }}</td>
+                            <td>{{ booking.user.name }}</td>
+                            <td>{{ booking.trek.name }}</td>
+                            <td>{{ booking.booking_date.strftime('%d %b %Y') }}</td>
+                            <td>
+                                {% if booking.booking_status == 'booked' %}
+                                    <span class="badge bg-primary">Booked</span>
+                                {% elif booking.booking_status == 'completed' %}
+                                    <span class="badge bg-success">Completed</span>
+                                {% elif booking.booking_status == 'cancelled' %}
+                                    <span class="badge bg-danger">Cancelled</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if booking.payment_status == 'paid' %}
+                                    <span class="badge bg-success">Paid</span>
+                                {% elif booking.payment_status == 'pending' %}
+                                    <span class="badge bg-warning text-dark">Pending</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">Refunded</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="text-center text-muted py-4">
+                <i class="bi bi-bookmark" style="font-size: 2rem;"></i>
+                <p class="mt-2 mb-0">No bookings yet.</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

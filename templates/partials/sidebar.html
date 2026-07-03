@@ -1,0 +1,35 @@
+{# Reusable sidebar navigation for admin pages.
+   Pass 'active' variable to highlight the current page.
+   Usage: {% include 'partials/sidebar.html' %} #}
+
+<div class="sidebar d-none d-md-block">
+    <nav class="nav flex-column">
+        <a class="nav-link {{ 'active' if active == 'dashboard' }}"
+           href="{{ url_for('admin.dashboard') }}">
+            <i class="bi bi-grid-1x2"></i> Dashboard
+        </a>
+        <a class="nav-link {{ 'active' if active == 'treks' }}"
+           href="{{ url_for('admin.treks') }}">
+            <i class="bi bi-compass"></i> Treks
+        </a>
+        <a class="nav-link {{ 'active' if active == 'staff' }}"
+           href="{{ url_for('admin.staff_page') }}">
+            <i class="bi bi-people"></i> Staff
+        </a>
+        <a class="nav-link {{ 'active' if active == 'users' }}"
+           href="{{ url_for('admin.users') }}">
+            <i class="bi bi-person"></i> Users
+        </a>
+        <a class="nav-link {{ 'active' if active == 'bookings' }}"
+           href="{{ url_for('admin.bookings') }}">
+            <i class="bi bi-bookmark"></i> Bookings
+        </a>
+        <a class="nav-link {{ 'active' if active == 'search' }}"
+           href="{{ url_for('admin.search') }}">
+            <i class="bi bi-search"></i> Search
+        </a>
+        <a class="nav-link" href="{{ url_for('auth.logout') }}">
+            <i class="bi bi-box-arrow-left"></i> Logout
+        </a>
+    </nav>
+</div>

@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+{% block title %}Search — TrekManager{% endblock %}
+
+{% block content %}
+{% set active = 'search' %}
+{% include 'partials/sidebar.html' %}
+
+<div class="main-content">
+    <h4 class="mb-4">Search</h4>
+
+    {# --- Search Form --- #}
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="GET" action="{{ url_for('admin.search') }}" class="row g-2 align-items-end">
+                <div class="col-md-8">
+                    <label for="q" class="form-label">Search treks, users, or staff</label>
+                    <input type="text" class="form-control" id="q" name="q"
+                           value="{{ query }}" placeholder="Enter name, email, or location..." required>
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary w-100">Search</button>
+                </div>
+                {% if query %}
+                <div class="col-md-2">
+                    <a href="{{ url_for('admin.search') }}" class="btn btn-outline-secondary w-100">Clear</a>
+                </div>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+
+    {% if query %}
+    {# --- Trek Results --- #}
+    {% if trek_results %}
+    <div class="card mb-4">
+        <div class="card-header">Treks ({{ trek_results | length }})</div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Location</th>
+                            <th>Difficulty</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for trek in trek_results %}
+                        <tr>
+                            <td>{{ trek.id }}</td>
+                            <td>
+                                <a href="{{ url_for('admin.trek_edit', trek_id=trek.id) }}">{{ trek.name }}</a>
+                            </td>
+                            <td>{{ trek.location }}</td>
+                            <td>
+                                {% if trek.difficulty == 'easy' %}
+                                    <span class="badge bg-success">Easy</span>
+                                {% elif trek.difficulty == 'moderate' %}
+                                    <span class="badge bg-warning text-dark">Moderate</span>
+                                {% else %}
+                                    <span class="badge bg-danger">Hard</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <span class="badge bg-{{ 'primary' if trek.status == 'open' else 'secondary' }}">
+                                    {{ trek.status | title }}
+                                </span>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    {# --- User Results --- #}
+    {% if user_results %}
+    <div class="card mb-4">
+        <div class="card-header">Users ({{ user_results | length }})</div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for u in user_results %}
+                        <tr>
+                            <td>{{ u.id }}</td>
+                            <td>{{ u.name }}</td>
+                            <td>{{ u.email }}</td>
+                            <td><span class="badge bg-light text-dark">{{ u.role | title }}</span></td>
+                            <td>
+                                {% if u.is_blacklisted %}
+                                    <span class="badge bg-danger">Blacklisted</span>
+                                {% else %}
+                                    <span class="badge bg-success">Active</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    {# --- No results --- #}
+    {% if not trek_results and not user_results %}
+    <div class="card">
+        <div class="card-body text-center text-muted py-4">
+            <i class="bi bi-search" style="font-size: 2rem;"></i>
+            <p class="mt-2 mb-0">No results found for "{{ query }}".</p>
+        </div>
+    </div>
+    {% endif %}
+    {% endif %}
+</div>
+{% endblock %}

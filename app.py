@@ -2,7 +2,7 @@ from flask import Flask, render_template
 from config import Config
 from extensions import db
 from models import User, StaffProfile, Trek, Booking
-from seed import seed_admin
+from seed import seed_admin, seed_demo_data
 
 
 def create_app():
@@ -23,6 +23,7 @@ def create_app():
     with app.app_context():
         db.create_all()
         seed_admin()
+        seed_demo_data()
 
     # --- Register Blueprints ---
     # Each blueprint handles routes for a specific part of the app.

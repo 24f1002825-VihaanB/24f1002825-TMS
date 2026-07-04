@@ -9,6 +9,16 @@ admin = Blueprint('admin', __name__, url_prefix='/admin')
 PER_PAGE = 10  # Treks per page for pagination
 
 
+def safe_parse_date(date_string):
+    """Parse a date string safely. Returns None if parsing fails."""
+    if not date_string:
+        return None
+    try:
+        return datetime.strptime(date_string, '%Y-%m-%d').date()
+    except (ValueError, TypeError):
+        return None
+
+
 # =============================================================================
 # DASHBOARD
 # =============================================================================
@@ -93,8 +103,8 @@ def trek_add():
             available_slots=available_slots,
             description=description,
             status=status,
-            start_date=datetime.strptime(start_date, '%Y-%m-%d').date() if start_date else None,
-            end_date=datetime.strptime(end_date, '%Y-%m-%d').date() if end_date else None,
+            start_date=safe_parse_date(start_date),
+            end_date=safe_parse_date(end_date),
             assigned_staff=int(assigned_staff) if assigned_staff else None
         )
         db.session.add(trek)
@@ -127,8 +137,8 @@ def trek_edit(trek_id):
         end_date = request.form.get('end_date', '')
         assigned_staff = request.form.get('assigned_staff', '')
 
-        trek.start_date = datetime.strptime(start_date, '%Y-%m-%d').date() if start_date else None
-        trek.end_date = datetime.strptime(end_date, '%Y-%m-%d').date() if end_date else None
+        trek.start_date = safe_parse_date(start_date)
+        trek.end_date = safe_parse_date(end_date)
         trek.assigned_staff = int(assigned_staff) if assigned_staff else None
 
         db.session.commit()

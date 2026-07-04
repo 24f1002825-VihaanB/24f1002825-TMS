@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block title %}My Bookings — TrekManager{% endblock %}
+
+{% block content %}
+{% set active = 'bookings' %}
+{% include 'partials/user_sidebar.html' %}
+
+<div class="main-content">
+    <h4 class="mb-4">My Bookings</h4>
+
+    <div class="card">
+        <div class="card-body p-0">
+            {% if bookings %}
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th>Trek Name</th>
+                            <th>Booking Date</th>
+                            <th>Trek Dates</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for booking in bookings %}
+                        <tr>
+                            <td>{{ booking.trek.name }}</td>
+                            <td>{{ booking.booking_date.strftime('%d %b %Y') }}</td>
+                            <td>
+                                {% if booking.trek.start_date and booking.trek.end_date %}
+                                    {{ booking.trek.start_date.strftime('%d %b') }} - {{ booking.trek.end_date.strftime('%d %b %Y') }}
+                                {% else %}
+                                    TBD
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if booking.booking_status == 'booked' %}
+                                    <span class="badge bg-primary">Booked</span>
+                                {% elif booking.booking_status == 'completed' %}
+                                    <span class="badge bg-success">Completed</span>
+                                {% elif booking.booking_status == 'cancelled' %}
+                                    <span class="badge bg-danger">Cancelled</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{{ url_for('user.booking_detail', booking_id=booking.id) }}"
+                                   class="btn btn-sm btn-outline-primary">View Details</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="text-center text-muted py-4">
+                <i class="bi bi-bookmark" style="font-size: 2rem;"></i>
+                <p class="mt-2 mb-0">No bookings yet. <a href="{{ url_for('user.browse_treks') }}">Browse treks</a> to get started!</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Trekking History — TrekManager{% endblock %}
+
+{% block content %}
+{% set active = 'history' %}
+{% include 'partials/user_sidebar.html' %}
+
+<div class="main-content">
+    <h4 class="mb-4">Trekking History</h4>
+
+    <div class="card">
+        <div class="card-body p-0">
+            {% if history %}
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th>Trek Name</th>
+                            <th>Trek Dates</th>
+                            <th>Completed On</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for booking in history %}
+                        <tr>
+                            <td>{{ booking.trek.name }}</td>
+                            <td>
+                                {% if booking.trek.start_date and booking.trek.end_date %}
+                                    {{ booking.trek.start_date.strftime('%d %b') }} - {{ booking.trek.end_date.strftime('%d %b %Y') }}
+                                {% else %}
+                                    —
+                                {% endif %}
+                            </td>
+                            <td>{{ booking.booking_date.strftime('%d %b %Y') }}</td>
+                            <td><span class="badge bg-success">Completed</span></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="text-center text-muted py-4">
+                <i class="bi bi-clock-history" style="font-size: 2rem;"></i>
+                <p class="mt-2 mb-0">No completed treks yet.</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

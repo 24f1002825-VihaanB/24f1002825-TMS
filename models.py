@@ -87,7 +87,7 @@ class Trek(db.Model):
 # BOOKING MODEL
 # =============================================================================
 # Links a user (trekker) to a trek they have booked.
-# Each booking tracks the status and payment independently.
+# Each booking tracks the trekker booking status.
 
 class Booking(db.Model):
     __tablename__ = 'booking'
@@ -97,7 +97,7 @@ class Booking(db.Model):
     trek_id = db.Column(db.Integer, db.ForeignKey('trek.id'), nullable=False)
     booking_date = db.Column(db.DateTime, default=datetime.utcnow)
     booking_status = db.Column(db.String(20), default='booked')  # 'booked', 'cancelled', 'completed'
-    payment_status = db.Column(db.String(20), default='pending')  # 'pending', 'paid', 'refunded'
 
     def __repr__(self):
         return f'<Booking user={self.user_id} trek={self.trek_id} ({self.booking_status})>'
+

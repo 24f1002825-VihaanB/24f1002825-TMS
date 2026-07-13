@@ -3,7 +3,6 @@
 
 {% block content %}
 {% set active = 'bookings' %}
-{% include 'partials/user_sidebar.html' %}
 
 <div class="main-content">
     <div class="mb-4">
@@ -77,16 +76,6 @@
                             <span class="badge bg-danger">Cancelled</span>
                         {% endif %}
                     </div>
-                    <div class="mb-3">
-                        <small class="text-muted d-block">Payment Status</small>
-                        {% if booking.payment_status == 'paid' %}
-                            <span class="badge bg-success">Paid</span>
-                        {% elif booking.payment_status == 'pending' %}
-                            <span class="badge bg-warning text-dark">Pending</span>
-                        {% else %}
-                            <span class="badge bg-secondary">Refunded</span>
-                        {% endif %}
-                    </div>
 
                     {# Cancel button — only for active bookings #}
                     {% if booking.booking_status == 'booked' %}
@@ -104,3 +93,6 @@
     </div>
 </div>
 {% endblock %}
+
+
+

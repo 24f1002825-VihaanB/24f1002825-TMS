@@ -127,8 +127,7 @@ def book_trek(trek_id):
     booking = Booking(
         user_id=user_id,
         trek_id=trek_id,
-        booking_status='booked',
-        payment_status='pending'
+        booking_status='booked'
     )
     db.session.add(booking)
 
@@ -193,7 +192,6 @@ def cancel_booking(booking_id):
 
     # Cancel the booking and restore the slot
     booking.booking_status = 'cancelled'
-    booking.payment_status = 'refunded'
     booking.trek.available_slots += 1
 
     db.session.commit()
@@ -240,3 +238,4 @@ def profile():
         return redirect(url_for('user.profile'))
 
     return render_template('user/profile.html', user=current_user)
+

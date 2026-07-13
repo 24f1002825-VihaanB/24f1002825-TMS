@@ -154,7 +154,6 @@ def mark_completed(trek_id):
 
     for booking in active_bookings:
         booking.booking_status = 'completed'
-        booking.payment_status = 'paid'
 
     db.session.commit()
     flash(f'Trek "{trek.name}" marked as completed! {len(active_bookings)} booking(s) updated.', 'success')
@@ -186,3 +185,4 @@ def profile():
         return redirect(url_for('staff.profile'))
 
     return render_template('staff/profile.html', user=user, profile=staff_profile)
+

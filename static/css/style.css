@@ -28,39 +28,71 @@ a:hover {
 
 /* --- Navbar --- */
 .navbar {
-    background-color: #FFFFFF;
-    border-bottom: 1px solid #E2E8F0;
-    padding: 0.75rem 0;
+    background-color: #173B66;
+    border-bottom: 1px solid #0F2C4F;
+    padding: 0.65rem 0;
+    box-shadow: 0 1px 4px rgba(15, 23, 42, 0.16);
 }
 
 .navbar-brand {
-    font-weight: 700;
-    font-size: 1.15rem;
-    color: #1E293B !important;
-    letter-spacing: -0.02em;
+    font-weight: 800;
+    font-size: 1.2rem;
+    color: #FFFFFF !important;
+    margin-right: 1.35rem;
 }
 
 .navbar-brand .brand-icon {
-    color: #2563EB;
+    color: #CFE0F6;
+}
+
+.navbar-toggler {
+    border-color: rgba(255, 255, 255, 0.35);
+}
+
+.navbar-toggler:focus {
+    box-shadow: 0 0 0 0.15rem rgba(255, 255, 255, 0.24);
+}
+
+.navbar-toggler-icon {
+    filter: invert(1) grayscale(1) brightness(2);
 }
 
 .nav-link {
-    color: #64748B !important;
+    color: rgba(255, 255, 255, 0.78) !important;
     font-weight: 500;
-    font-size: 0.9rem;
-    padding: 0.5rem 0.75rem !important;
-    border-radius: 6px;
+    font-size: 0.95rem;
+    padding: 0.45rem 0.7rem !important;
+    border-radius: 4px;
     transition: color 0.15s, background-color 0.15s;
 }
 
-.nav-link:hover {
-    color: #2563EB !important;
-    background-color: #F1F5F9;
+.nav-link:hover,
+.nav-link.active {
+    color: #FFFFFF !important;
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
-.nav-link.active {
-    color: #2563EB !important;
-    background-color: #EFF6FF;
+.navbar-user {
+    color: rgba(255, 255, 255, 0.82) !important;
+    white-space: nowrap;
+}
+
+.navbar-role {
+    color: rgba(255, 255, 255, 0.72);
+}
+
+.navbar-logout {
+    border-color: rgba(255, 255, 255, 0.58);
+    color: #FFFFFF;
+    border-radius: 5px;
+    font-weight: 600;
+    padding: 0.42rem 0.75rem;
+}
+
+.navbar-logout:hover {
+    background-color: #FFFFFF;
+    color: #173B66;
+    border-color: #FFFFFF;
 }
 
 /* --- Auth Pages --- */
@@ -241,49 +273,12 @@ a:hover {
     font-size: 1.25rem;
 }
 
-/* --- Sidebar --- */
-.sidebar {
-    width: 240px;
-    min-height: calc(100vh - 60px);
-    background: #FFFFFF;
-    border-right: 1px solid #E2E8F0;
-    padding: 1.5rem 0;
-    position: fixed;
-    top: 60px;
-    left: 0;
-    overflow-y: auto;
-}
-
-.sidebar .nav-link {
-    padding: 0.55rem 1.25rem !important;
-    font-size: 0.875rem;
-    color: #64748B !important;
-    border-radius: 0;
-    margin: 1px 0;
-    display: flex;
-    align-items: center;
-    gap: 0.65rem;
-}
-
-.sidebar .nav-link:hover {
-    color: #2563EB !important;
-    background-color: #F1F5F9;
-}
-
-.sidebar .nav-link.active {
-    color: #2563EB !important;
-    background-color: #EFF6FF;
-    border-right: 3px solid #2563EB;
-}
-
-.sidebar .nav-link i {
-    width: 18px;
-    text-align: center;
-}
-
+/* --- Page Layout --- */
 .main-content {
-    margin-left: 240px;
-    padding: 2rem;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem 3rem;
     min-height: calc(100vh - 60px);
 }
 
@@ -350,12 +345,19 @@ a:hover {
     margin-bottom: 1.5rem;
 }
 
-/* --- Responsive: hide sidebar on small screens --- */
-@media (max-width: 768px) {
-    .sidebar {
-        display: none;
+/* --- Responsive --- */
+@media (max-width: 992px) {
+    .navbar-nav {
+        align-items: stretch !important;
     }
+
+    .navbar-user {
+        padding-top: 0.85rem !important;
+    }
+}
+
+@media (max-width: 768px) {
     .main-content {
-        margin-left: 0;
+        padding: 1.25rem;
     }
 }

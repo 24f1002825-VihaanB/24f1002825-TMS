@@ -36,6 +36,27 @@ def dashboard():
 
 
 # =============================================================================
+# MY TREKS — List all assigned treks
+# =============================================================================
+
+@staff.route('/my-treks')
+@role_required('staff')
+def my_treks():
+    user_id = session['user_id']
+    assigned_treks = Trek.query.filter_by(assigned_staff=user_id).all()
+
+    # Build participant count for each trek
+    trek_data = []
+    for trek in assigned_treks:
+        participant_count = Booking.query.filter(
+            Booking.trek_id == trek.id,
+            Booking.booking_status != 'cancelled'
+        ).count()
+        trek_data.append({'trek': trek, 'participants': participant_count})
+
+    return render_template('staff/my_treks.html', trek_data=trek_data)
+
+# =============================================================================
 # TREK DETAIL — View trek info + participant list
 # =============================================================================
 

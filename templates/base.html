@@ -39,7 +39,7 @@
                     <li class="nav-item"><a class="nav-link {{ 'active' if request.endpoint == 'admin.search' }}" href="{{ url_for('admin.search') }}">Search</a></li>
                     {% elif session.get('role') == 'staff' %}
                     <li class="nav-item"><a class="nav-link {{ 'active' if request.endpoint == 'staff.dashboard' }}" href="{{ url_for('staff.dashboard') }}">Dashboard</a></li>
-                    <li class="nav-item"><a class="nav-link {{ 'active' if request.endpoint == 'staff.trek_detail' }}" href="{{ url_for('staff.dashboard') }}#my-treks">My Treks</a></li>
+                    <li class="nav-item"><a class="nav-link {{ 'active' if request.endpoint in ['staff.my_treks', 'staff.trek_detail'] }}" href="{{ url_for('staff.my_treks') }}">My Treks</a></li>
                     <li class="nav-item"><a class="nav-link {{ 'active' if request.endpoint == 'staff.profile' }}" href="{{ url_for('staff.profile') }}">Profile</a></li>
                     {% elif session.get('role') == 'trekker' %}
                     <li class="nav-item"><a class="nav-link {{ 'active' if request.endpoint == 'user.dashboard' }}" href="{{ url_for('user.dashboard') }}">Dashboard</a></li>

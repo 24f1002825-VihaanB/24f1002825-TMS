@@ -57,7 +57,7 @@ a:hover {
     filter: invert(1) grayscale(1) brightness(2);
 }
 
-.nav-link {
+.navbar .nav-link {
     color: rgba(255, 255, 255, 0.78) !important;
     font-weight: 500;
     font-size: 0.95rem;
@@ -66,8 +66,8 @@ a:hover {
     transition: color 0.15s, background-color 0.15s;
 }
 
-.nav-link:hover,
-.nav-link.active {
+.navbar .nav-link:hover,
+.navbar .nav-link.active {
     color: #FFFFFF !important;
     background-color: rgba(255, 255, 255, 0.1);
 }

@@ -4,7 +4,7 @@ from models import User
 
 
 def seed_admin():
-    """Create the admin user if one doesn't already exist."""
+    #Create the admin user if one doesn't already exist.
     existing_admin = User.query.filter_by(role='admin').first()
 
     if existing_admin is None:

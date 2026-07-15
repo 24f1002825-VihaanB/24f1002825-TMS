@@ -6,9 +6,7 @@ from routes.auth import role_required
 user = Blueprint('user', __name__, url_prefix='/user')
 
 
-# =============================================================================
 # DASHBOARD
-# =============================================================================
 
 @user.route('/dashboard')
 @role_required('trekker')
@@ -30,9 +28,7 @@ def dashboard():
                            my_bookings=my_bookings)
 
 
-# =============================================================================
 # BROWSE TREKS — Search and filter open treks
-# =============================================================================
 
 @user.route('/treks')
 @role_required('trekker')
@@ -68,9 +64,7 @@ def browse_treks():
     return render_template('user/treks.html', treks=treks, locations=locations)
 
 
-# =============================================================================
 # TREK DETAIL — View full trek info + Book Now
-# =============================================================================
 
 @user.route('/trek/<int:trek_id>')
 @role_required('trekker')
@@ -90,9 +84,7 @@ def trek_detail(trek_id):
                            already_booked=already_booked)
 
 
-# =============================================================================
 # BOOK TREK — Create a new booking
-# =============================================================================
 
 @user.route('/trek/<int:trek_id>/book', methods=['POST'])
 @role_required('trekker')
@@ -140,9 +132,7 @@ def book_trek(trek_id):
     return redirect(url_for('user.my_bookings'))
 
 
-# =============================================================================
 # MY BOOKINGS — List all user's bookings
-# =============================================================================
 
 @user.route('/bookings')
 @role_required('trekker')
@@ -154,16 +144,13 @@ def my_bookings():
     return render_template('user/bookings.html', bookings=bookings)
 
 
-# =============================================================================
 # BOOKING DETAIL — View a specific booking
-# =============================================================================
 
 @user.route('/booking/<int:booking_id>')
 @role_required('trekker')
 def booking_detail(booking_id):
     booking = Booking.query.get_or_404(booking_id)
 
-    # SECURITY: Users can only view their own bookings
     if booking.user_id != session['user_id']:
         flash('You do not have permission to view this booking.', 'danger')
         return redirect(url_for('user.my_bookings'))
@@ -171,16 +158,13 @@ def booking_detail(booking_id):
     return render_template('user/booking_detail.html', booking=booking)
 
 
-# =============================================================================
 # CANCEL BOOKING
-# =============================================================================
 
 @user.route('/booking/<int:booking_id>/cancel', methods=['POST'])
 @role_required('trekker')
 def cancel_booking(booking_id):
     booking = Booking.query.get_or_404(booking_id)
 
-    # Security check
     if booking.user_id != session['user_id']:
         flash('You do not have permission to cancel this booking.', 'danger')
         return redirect(url_for('user.my_bookings'))
@@ -200,9 +184,7 @@ def cancel_booking(booking_id):
     return redirect(url_for('user.my_bookings'))
 
 
-# =============================================================================
 # TREKKING HISTORY — View completed treks
-# =============================================================================
 
 @user.route('/history')
 @role_required('trekker')
@@ -216,9 +198,7 @@ def history():
     return render_template('user/history.html', history=completed)
 
 
-# =============================================================================
 # PROFILE — View and edit
-# =============================================================================
 
 @user.route('/profile', methods=['GET', 'POST'])
 @role_required('trekker')

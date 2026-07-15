@@ -7,9 +7,7 @@ from models import User, StaffProfile
 auth = Blueprint('auth', __name__)
 
 
-# =============================================================================
 # DECORATORS — Reusable access control
-# =============================================================================
 
 def login_required(f):
     """Decorator that redirects to login page if user is not logged in.
@@ -54,9 +52,7 @@ def role_required(role):
     return decorator
 
 
-# =============================================================================
 # LOGIN
-# =============================================================================
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
@@ -104,9 +100,7 @@ def login():
     return render_template('auth/login.html')
 
 
-# =============================================================================
 # REGISTER
-# =============================================================================
 
 @auth.route('/register', methods=['GET', 'POST'])
 def register():
@@ -171,9 +165,7 @@ def register():
     return render_template('auth/register.html')
 
 
-# =============================================================================
 # LOGOUT
-# =============================================================================
 
 @auth.route('/logout')
 def logout():
@@ -182,9 +174,7 @@ def logout():
     return redirect(url_for('auth.login'))
 
 
-# =============================================================================
 # HELPER — Redirect user to their role-specific dashboard
-# =============================================================================
 
 def redirect_to_dashboard(role):
     """Send the user to the correct dashboard based on their role."""

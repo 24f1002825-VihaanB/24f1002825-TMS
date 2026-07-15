@@ -6,9 +6,9 @@ from routes.auth import role_required
 staff = Blueprint('staff', __name__, url_prefix='/staff')
 
 
-# =============================================================================
+
 # DASHBOARD
-# =============================================================================
+
 
 @staff.route('/dashboard')
 @role_required('staff')
@@ -35,9 +35,9 @@ def dashboard():
                            open_treks=open_treks)
 
 
-# =============================================================================
+
 # MY TREKS — List all assigned treks
-# =============================================================================
+
 
 @staff.route('/my-treks')
 @role_required('staff')
@@ -56,9 +56,7 @@ def my_treks():
 
     return render_template('staff/my_treks.html', trek_data=trek_data)
 
-# =============================================================================
 # TREK DETAIL — View trek info + participant list
-# =============================================================================
 
 @staff.route('/trek/<int:trek_id>')
 @role_required('staff')
@@ -78,9 +76,7 @@ def trek_detail(trek_id):
                            participants=participants)
 
 
-# =============================================================================
 # UPDATE AVAILABLE SLOTS
-# =============================================================================
 
 @staff.route('/trek/<int:trek_id>/update-slots', methods=['POST'])
 @role_required('staff')
@@ -102,9 +98,7 @@ def update_slots(trek_id):
     return redirect(url_for('staff.trek_detail', trek_id=trek.id))
 
 
-# =============================================================================
 # UPDATE TREK STATUS (Open / Closed)
-# =============================================================================
 
 @staff.route('/trek/<int:trek_id>/update-status', methods=['POST'])
 @role_required('staff')
@@ -126,9 +120,7 @@ def update_status(trek_id):
     return redirect(url_for('staff.trek_detail', trek_id=trek.id))
 
 
-# =============================================================================
 # MARK TREK AS STARTED
-# =============================================================================
 
 @staff.route('/trek/<int:trek_id>/mark-started', methods=['POST'])
 @role_required('staff')
@@ -151,9 +143,7 @@ def mark_started(trek_id):
     return redirect(url_for('staff.trek_detail', trek_id=trek.id))
 
 
-# =============================================================================
 # MARK TREK AS COMPLETED
-# =============================================================================
 
 @staff.route('/trek/<int:trek_id>/mark-completed', methods=['POST'])
 @role_required('staff')
@@ -182,9 +172,7 @@ def mark_completed(trek_id):
     return redirect(url_for('staff.trek_detail', trek_id=trek.id))
 
 
-# =============================================================================
 # STAFF PROFILE — View and edit
-# =============================================================================
 
 @staff.route('/profile', methods=['GET', 'POST'])
 @role_required('staff')

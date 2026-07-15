@@ -19,9 +19,7 @@ def safe_parse_date(date_string):
         return None
 
 
-# =============================================================================
 # DASHBOARD
-# =============================================================================
 
 @admin.route('/dashboard')
 @role_required('admin')
@@ -42,9 +40,7 @@ def dashboard():
                            recent_bookings=recent_bookings)
 
 
-# =============================================================================
 # TREK MANAGEMENT — List, Add, Edit, Delete
-# =============================================================================
 
 @admin.route('/treks')
 @role_required('admin')
@@ -162,9 +158,7 @@ def trek_delete(trek_id):
     return redirect(url_for('admin.treks'))
 
 
-# =============================================================================
 # STAFF MANAGEMENT — Approve, Reject
-# =============================================================================
 
 @admin.route('/staff')
 @role_required('admin')
@@ -212,9 +206,7 @@ def staff_reject(profile_id):
     return redirect(url_for('admin.staff_page', tab='pending'))
 
 
-# =============================================================================
 # USER MANAGEMENT — Blacklist / Unblacklist
-# =============================================================================
 
 @admin.route('/users')
 @role_required('admin')
@@ -250,9 +242,7 @@ def user_blacklist(user_id):
     return redirect(url_for('admin.users'))
 
 
-# =============================================================================
 # BOOKINGS — View all bookings
-# =============================================================================
 
 @admin.route('/bookings')
 @role_required('admin')
@@ -261,9 +251,7 @@ def bookings():
     return render_template('admin/bookings.html', bookings=all_bookings)
 
 
-# =============================================================================
 # SEARCH — Unified search across treks and users
-# =============================================================================
 
 @admin.route('/search')
 @role_required('admin')

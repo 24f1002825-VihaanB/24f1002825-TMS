@@ -2,9 +2,7 @@ from datetime import datetime
 from extensions import db
 
 
-# =============================================================================
 # USER MODEL
-# =============================================================================
 # Stores ALL users — admins, staff, and trekkers — in one table.
 # The 'role' column distinguishes them. This is simpler than having
 # 3 separate tables because login works the same way for everyone.
@@ -33,9 +31,7 @@ class User(db.Model):
         return f'<User {self.name} ({self.role})>'
 
 
-# =============================================================================
 # STAFF PROFILE MODEL
-# =============================================================================
 # Extra information for staff members. Linked to User via user_id.
 # approval_status tracks whether the admin has approved this staff member.
 
@@ -46,15 +42,12 @@ class StaffProfile(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     phone = db.Column(db.String(15), default='')
     bio = db.Column(db.Text, default='')
-    approval_status = db.Column(db.String(20), default='pending')  # 'pending', 'approved', 'rejected'
-
+    approval_status = db.Column(db.String(20), default='pending') 
     def __repr__(self):
         return f'<StaffProfile user_id={self.user_id} status={self.approval_status}>'
 
 
-# =============================================================================
 # TREK MODEL
-# =============================================================================
 # Represents a trekking event. Each trek can be assigned to one staff member
 # and can have many bookings from users.
 
@@ -83,9 +76,7 @@ class Trek(db.Model):
         return f'<Trek {self.name} ({self.status})>'
 
 
-# =============================================================================
 # BOOKING MODEL
-# =============================================================================
 # Links a user (trekker) to a trek they have booked.
 # Each booking tracks the trekker booking status.
 
